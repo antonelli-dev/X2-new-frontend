@@ -1,12 +1,12 @@
 "use client";
 import React, { createContext, useContext, useMemo, ReactNode } from "react";
-import { supabase } from "@/app/lib/SupaBase.client";
+import { createClient } from "../utils/supabase/client";
 
 interface AuthContextType {
   login: (email: string, password: string) => Promise<void>;
   register: (email: string, password: string) => Promise<void>;
   logout: () => Promise<void>;
-  getSession: () => Promise<string | null>; 
+  getSession: () => Promise<string | null>;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -16,6 +16,8 @@ interface AuthProviderProps {
 }
 
 export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
+
+  const supabase = createClient()
   const login = async (email: string, password: string) => {
     const { error } = await supabase.auth.signInWithPassword({
       email,

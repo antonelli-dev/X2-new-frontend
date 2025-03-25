@@ -1,23 +1,9 @@
-import React from "react";
-import { createServerComponentClient } from "@supabase/auth-helpers-nextjs";
-import { cookies } from "next/headers";
-import { redirect } from "next/navigation";
 import LoginForm from "./LoginForm";
-import Image from "next/image";
 import TestimonialSlider from "./TestimonialSlider";
+import Image from "next/image";
 import AvaraLogo from "../img/avara-logo.png";
+
 export default async function LoginPage() {
-  const supabase = createServerComponentClient({
-    cookies: () => cookies(),
-  });
-
-  const {
-    data: { session },
-  } = await supabase.auth.getSession();
-
-  if (session) {
-    redirect("/chat");
-  }
 
   return (
     <main className="h-screen flex flex-row justify-center bg-gray-100">
