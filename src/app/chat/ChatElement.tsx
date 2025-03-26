@@ -24,14 +24,14 @@ const ChatElement = ({ chatName }: ChatElementProps) => {
         setOpenMenu(false);
       }
     };
-    
+
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, [openMenu]);
 
   const openModal = () => {
     setIsModalOpen(true);
-    setOpenMenu(false); // Close the dropdown menu when opening modal
+    setOpenMenu(false);
   };
 
   const closeModal = () => {
@@ -61,8 +61,7 @@ const ChatElement = ({ chatName }: ChatElementProps) => {
           <button
             className="w-full text-left px-4 py-2 hover:bg-gray-700 text-sm"
             onClick={() => {
-              console.log("Rename clicked");
-              openModal(); // Open the modal instead of just closing the menu
+              setOpenMenu(false);
             }}
           >
             Rename
@@ -70,15 +69,14 @@ const ChatElement = ({ chatName }: ChatElementProps) => {
           <button
             className="w-full text-left px-4 py-2 hover:bg-gray-700 text-sm"
             onClick={() => {
-              console.log("Delete clicked");
-              setOpenMenu(false);
+              openModal();
             }}
           >
             Delete
           </button>
         </div>
       )}
-      
+
       {/* Modal component */}
       <Modal isOpen={isModalOpen} closeModal={closeModal} />
     </div>
