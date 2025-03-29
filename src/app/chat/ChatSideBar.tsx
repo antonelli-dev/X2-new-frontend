@@ -1,6 +1,6 @@
 import React from "react";
 import ChatList from "./ChatList";
-import AvaraLogo from "@/app/img/avara-logo.png";
+import AvaraLogo from "@/img/avara-logo.png";
 import Image from "next/image";
 
 const ChatSideBar = () => {

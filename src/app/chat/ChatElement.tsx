@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from "react";
 import { Pencil } from "lucide-react";
-import Modal from "@/app/generics/GenericModal"; // Adjust the import path as needed
+import Modal from "@/generics/GenericModal"; // Adjust the import path as needed
 
 interface ChatElementProps {
   chatName: string;
