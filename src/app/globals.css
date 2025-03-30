@@ -7,3 +7,6 @@ html, body {
 }
 
 
+.grandiet-interactive-input {
+  background: linear-gradient(90deg, #DEDEDE 0%, #BDDDFF 100%);
+}

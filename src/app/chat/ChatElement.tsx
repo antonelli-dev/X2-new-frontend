@@ -1,16 +1,20 @@
 import React, { useState, useRef, useEffect } from "react";
-import { Pencil } from "lucide-react";
-import Modal from "@/generics/GenericModal"; // Adjust the import path as needed
+import { Pencil } from "lucide-react";// Adjust the import path as needed
+import { DeleteChatModal } from "./DeleteChatModal";
+import { useInterfaceStore } from "@/stores/useInterfaceStore";
 
 interface ChatElementProps {
+  chatId: string;
   chatName: string;
 }
 
-const ChatElement = ({ chatName }: ChatElementProps) => {
+const ChatElement = ({ chatId, chatName }: ChatElementProps) => {
   const [openMenu, setOpenMenu] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement | null>(null);
   const buttonRef = useRef<SVGSVGElement | null>(null);
+
+  const setSelectedChatId = useInterfaceStore((state) => state.setSelectedChatId);
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -34,13 +38,14 @@ const ChatElement = ({ chatName }: ChatElementProps) => {
     setOpenMenu(false);
   };
 
-  const closeModal = () => {
-    setIsModalOpen(false);
-  };
+  const handleSelectChat = () => {
+    setSelectedChatId(chatId);
+    setOpenMenu(false);
+  }
 
   return (
     <div className="relative w-full">
-      <button className="text-left w-full px-4 py-3 rounded-lg bg-white shadow-md flex justify-between items-center">
+      <button className="text-left w-full px-4 py-3 rounded-lg bg-white shadow-md flex justify-between items-center" onClick={handleSelectChat}>
         <span>{chatName ?? "New Chat"}</span>
         <Pencil
           ref={buttonRef}
@@ -78,7 +83,7 @@ const ChatElement = ({ chatName }: ChatElementProps) => {
       )}
 
       {/* Modal component */}
-      <Modal isOpen={isModalOpen} closeModal={closeModal} />
+      <DeleteChatModal isOpen={isModalOpen} chatId={chatId} onClose={ () => setIsModalOpen(false) } />
     </div>
   );
 };

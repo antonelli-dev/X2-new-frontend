@@ -1,10 +1,13 @@
 "use client"
 import React from "react";
 import ChatElement from "./ChatElement";
-import { useFetchChats } from "@/services/ChatServices"; 
+import { useFetchChats } from "@/queries/chat.queries";
+import { useAuthStore } from "@/stores/useAuthStore";
 
 const ChatList = () => {
-  const { data: chats, isLoading, error } = useFetchChats("726abff5-7448-4656-b5ad-c51b6cfdafe6");
+  const user = useAuthStore((state) => state.user);
+  const { data: chats, isLoading, error } = useFetchChats(user?.user_id ?? "");
+
   if (isLoading) return <div className="text-center py-4">Loading chats...</div>;
   
   if (error) return <div className="text-center py-4 text-red-500">Error loading chats</div>;
@@ -16,7 +19,8 @@ const ChatList = () => {
       { chats.map((chat) => (
         <ChatElement 
           key={chat.chat_id} 
-          chatName={chat.chat_history_name} 
+          chatId={chat.chat_id}
+          chatName={chat.chat_history_name}
         />
       ))}
     </div>

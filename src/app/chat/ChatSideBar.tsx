@@ -1,7 +1,7 @@
 import React from "react";
-import ChatList from "./ChatList";
 import AvaraLogo from "@/img/avara-logo.png";
 import Image from "next/image";
+import { ChatHistory } from "@/components/ChatHistory";
 
 const ChatSideBar = () => {
   return (
@@ -19,14 +19,7 @@ const ChatSideBar = () => {
           <span className="font-bold text-xl">AVARA LABS</span>
         </section>
 
-        <button
-          className="flex justify-between items-center bg-white py-3 px-4 rounded-lg shadow-md mb-10 text-left"
-          type="button"
-        >
-          Upload
-        </button>
-        <span className="font-bold text-2xl">Chats</span>
-        <ChatList />
+        <ChatHistory></ChatHistory>
         <div className="flex flex-col justify-between mt-auto mb-4">
           <button className="text-left text-xl py-1 px-4">API</button>
           <button className="text-left text-xl py-1 px-4">Contact</button>

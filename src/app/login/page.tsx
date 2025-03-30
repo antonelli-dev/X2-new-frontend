@@ -1,7 +1,7 @@
 import LoginForm from "./LoginForm";
 import TestimonialSlider from "./TestimonialSlider";
 import Image from "next/image";
-import AvaraLogo from "../img/avara-logo.png";
+import AvaraLogo from "../../img/avara-logo.png";
 
 export default async function LoginPage() {
 
