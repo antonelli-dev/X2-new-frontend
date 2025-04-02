@@ -1,5 +1,5 @@
 import { Chat } from "@/interfaces/chat.interface";
-import { deleteChat, fetchChats, startChat } from "@/services/ChatServices";
+import { deleteChat, fetchChats, startChat, updateChatName } from "@/services/ChatServices";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 
 export const useFetchChats = (userId: string) => {
@@ -25,6 +25,17 @@ export const useStartChat = () => {
 
     return useMutation({
         mutationFn: (userId: string) => startChat(userId),
+        onSuccess: () => {
+            queryClient.invalidateQueries({ queryKey: ["chats"] });
+        },
+    });
+}
+
+export const useUpdateChatName = () => {
+    const queryClient = useQueryClient();
+
+    return useMutation({
+        mutationFn: ({ chatId, chatName }: { chatId: string; chatName: string }) => updateChatName(chatId, chatName),
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: ["chats"] });
         },
