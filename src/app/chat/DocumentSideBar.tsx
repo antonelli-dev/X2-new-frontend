@@ -13,7 +13,10 @@ const ChatSideBar = () => {
 
   const categoriesData = Object.entries(data?.documents ?? {}).map(([categoryName, docs]) => ({
     category: categoryName,
-    docs: docs.map((doc) => doc.name),
+    docs: docs.map((doc) => ({
+      name: doc.name,
+      doc_id: doc.doc_id,
+    })),
   }));
 
   return (
