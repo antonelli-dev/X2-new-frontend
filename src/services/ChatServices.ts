@@ -67,7 +67,7 @@ export const updateChatName = async (chatId: string, name: string) => {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
-        "api-key": "40b27ff5-665d-4ad6-8c06-e1ea17a3d996", // mismo header aquí
+        "api-key": "40b27ff5-665d-4ad6-8c06-e1ea17a3d996", 
       },
     }
   );
