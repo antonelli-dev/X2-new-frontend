@@ -9,10 +9,10 @@ interface CustomDropDownProps {
 }
 
 const CustomDropDown = ({ categories }: CustomDropDownProps) => {
-  const [openCategory, setOpenCategory] = useState<boolean>(false);
+  const [openCategory, setOpenCategory] = useState<string | null>(null);
 
-  const toggleDropdown = () => {
-    setOpenCategory(!openCategory);
+  const toggleDropdown = (category: string) => {
+    setOpenCategory((prev) => (prev === category ? null : category));
   };
 
   return (
@@ -29,19 +29,19 @@ const CustomDropDown = ({ categories }: CustomDropDownProps) => {
             />
             <span className="text-lg font-semibold">{category}</span>
             <span
-              onClick={toggleDropdown}
+              onClick={() => toggleDropdown(category)}
               className="ml-auto cursor-pointer text-blue-500"
             >
-              {openCategory ? "▲" : "▼"}
+              {openCategory === category ? "▲" : "▼"}
             </span>
           </div>
-          {openCategory && (
+          {openCategory === category && (
             <div className="pl-6 mt-2">
-              {docs.map((doc, index) => (
+              {docs.map((docName, index) => (
                 <div key={index} className="flex items-center space-x-2">
-                  <input type="checkbox" id={doc} className="h-4 w-4" />
-                  <label htmlFor={doc} className="text-sm text-gray-700">
-                    {doc}
+                  <input type="checkbox" id={docName} className="h-4 w-4" />
+                  <label htmlFor={docName} className="text-sm text-gray-700">
+                    {docName}
                   </label>
                 </div>
               ))}

@@ -1,25 +1,23 @@
-import { Chat } from "@/interfaces/chat.interface";
+import { Category } from "@/interfaces/category.interface";
 
-export const startChat = async (userId: string) => {
+export const getCategories = async (userId: string): Promise<Category> => {
   const response = await fetch(
-    `https://llm-chatbot-reg-production.up.railway.app/start_chat`,
+    `https://uploadvkg-production.up.railway.app/users/${userId}/documents`,
     {
-      method: "POST",
-      body: JSON.stringify({
-        user_id: userId,
-      }),
+      method: "GET",
       headers: {
         "Content-Type": "application/json",
-        "api-key": "40b27ff5-665d-4ad6-8c06-e1ea17a3d996", // mismo header aquí
+        "api-key": "40b27ff5-665d-4ad6-8c06-e1ea17a3d996",
       },
     }
   );
 
   if (!response.ok) {
-    throw new Error("Failed to delete chat");
+    throw new Error("Failed to fetch categories");
   }
 
-  return true;
+  const data: Category = await response.json();
+  return data;
 };
 
 export const deleteChat = async (chatId: string) => {
@@ -41,33 +39,33 @@ export const deleteChat = async (chatId: string) => {
   return true;
 };
 
-export const fetchChats = async (userId: string): Promise<Chat[]> => {
-  const response = await fetch(
-    `https://llm-chatbot-reg-production.up.railway.app/chats/${userId}`,
-    {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-        "api-key": "40b27ff5-665d-4ad6-8c06-e1ea17a3d996",
-      },
-    }
-  );
+// export const fetchChats = async (userId: string): Promise<Chat[]> => {
+//   const response = await fetch(
+//     `https://llm-chatbot-reg-production.up.railway.app/chats/${userId}`,
+//     {
+//       method: "GET",
+//       headers: {
+//         "Content-Type": "application/json",
+//         "api-key": "40b27ff5-665d-4ad6-8c06-e1ea17a3d996",
+//       },
+//     }
+//   );
 
-  if (!response.ok) {
-    throw new Error("Failed to fetch chats");
-  }
-  const chats = (await response.json()).chats;
-  return chats;
-};
+//   if (!response.ok) {
+//     throw new Error("Failed to fetch chats");
+//   }
+//   const chats = (await response.json()).chats;
+//   return chats;
+// };
 
 export const updateChatName = async (chatId: string, name: string) => {
   const response = await fetch(
-    `https://llm-chatbot-reg-production.up.railway.app/chats/${chatId}/update_name?chat_history_name=${name}`,	
+    `https://llm-chatbot-reg-production.up.railway.app/chats/${chatId}/update_name?chat_history_name=${name}`,
     {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
-        "api-key": "40b27ff5-665d-4ad6-8c06-e1ea17a3d996", 
+        "api-key": "40b27ff5-665d-4ad6-8c06-e1ea17a3d996",
       },
     }
   );
@@ -86,7 +84,7 @@ export const getAllMessagesByChatId = async (chatId: string) => {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
-        "api-key": "40b27ff5-665d-4ad6-8c06-e1ea17a3d996", 
+        "api-key": "40b27ff5-665d-4ad6-8c06-e1ea17a3d996",
       },
     }
   );

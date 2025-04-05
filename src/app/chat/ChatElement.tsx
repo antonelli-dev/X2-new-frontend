@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect, ChangeEvent } from "react";
-import { Pencil, Save, X } from "lucide-react";// Adjust the import path as needed
+import { Pencil, Save, X } from "lucide-react";
 import { DeleteChatModal } from "./DeleteChatModal";
 import { useInterfaceStore } from "@/stores/useInterfaceStore";
 import { useUpdateChatName } from "@/queries/chat.queries";
@@ -56,7 +56,6 @@ const ChatElement = ({ chatId, chatName }: ChatElementProps) => {
   }
 
   const handleSaveChangeName = () => {
-    console.log("Saving chat name:", currentChatName);
     setChatName({ chatId, chatName: currentChatName });
     setIsEditing(false);
     setOpenMenu(false);
