@@ -1,25 +1,29 @@
 import React, { useState, useRef, useEffect, ChangeEvent } from "react";
 import { Pencil, Save, X } from "lucide-react";
 import { DeleteChatModal } from "./DeleteChatModal";
-import { useInterfaceStore } from "@/stores/useInterfaceStore";
 import { useUpdateChatName } from "@/queries/chat.queries";
+import { useChatStore } from "@/stores/useChatStore";
 
 interface ChatElementProps {
   chatId: string;
   chatName: string;
+  onClick?: () => void;
 }
 
-const ChatElement = ({ chatId, chatName }: ChatElementProps) => {
+const ChatElement = ({ chatId, chatName, onClick }: ChatElementProps) => {
   const [openMenu, setOpenMenu] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isEditing, setIsEditing] = useState<boolean>(false);
-  const [currentChatName, setCurrentChatName] = useState<string>(chatName ?? "New chat");
-  const [oldChatName, setOldChatName] = useState<string>(chatName ?? "New chat");
+  const [currentChatName, setCurrentChatName] = useState<string>(
+    chatName ?? "New chat"
+  );
+  const [oldChatName, setOldChatName] = useState<string>(
+    chatName ?? "New chat"
+  );
 
   const menuRef = useRef<HTMLDivElement | null>(null);
   const buttonRef = useRef<SVGSVGElement | null>(null);
 
-  const setSelectedChatId = useInterfaceStore((state) => state.setSelectedChatId);
   const { mutate: setChatName } = useUpdateChatName();
 
   useEffect(() => {
@@ -27,6 +31,9 @@ const ChatElement = ({ chatId, chatName }: ChatElementProps) => {
       setCurrentChatName(chatName);
     }
   }, []);
+
+  const selectedChat = useChatStore((state) => state.selectedChat);
+  const isActive = selectedChat === chatId;
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -51,18 +58,17 @@ const ChatElement = ({ chatId, chatName }: ChatElementProps) => {
   };
 
   const handleSelectChat = () => {
-    setSelectedChatId(chatId);
+    onClick?.();
     setOpenMenu(false);
-  }
+  };
 
   const handleSaveChangeName = () => {
     setChatName({ chatId, chatName: currentChatName });
     setIsEditing(false);
     setOpenMenu(false);
-  }
+  };
 
   const NormalButton = () => (
-
     <>
       <span>{currentChatName ?? "New Chat"}</span>
       <Pencil
@@ -76,7 +82,6 @@ const ChatElement = ({ chatId, chatName }: ChatElementProps) => {
         }}
       />
     </>
-
   );
 
   const EditingButton = () => (
@@ -85,8 +90,11 @@ const ChatElement = ({ chatId, chatName }: ChatElementProps) => {
         type="text"
         className="w-full bg-gray-400"
         value={currentChatName ?? ""}
-        onChange={(e: ChangeEvent<HTMLInputElement>) => setCurrentChatName(e.target.value)}></input>
-        <X
+        onChange={(e: ChangeEvent<HTMLInputElement>) =>
+          setCurrentChatName(e.target.value)
+        }
+      ></input>
+      <X
         ref={buttonRef}
         size={18}
         className="ml-2 cursor-pointer"
@@ -107,8 +115,12 @@ const ChatElement = ({ chatId, chatName }: ChatElementProps) => {
 
   return (
     <div className="relative w-full">
-
-      <button className="text-left w-full px-4 py-3 rounded-lg bg-white shadow-md flex justify-between items-center" onClick={handleSelectChat}>
+      <button
+        className={`text-left w-full px-4 py-3 rounded-lg shadow-md flex justify-between items-center transition-all
+        ${isActive ? "bg-blue-100 border border-blue-400" : "bg-white"}
+      `}
+        onClick={handleSelectChat}
+      >
         {isEditing ? <EditingButton /> : <NormalButton />}
       </button>
 
@@ -137,8 +149,11 @@ const ChatElement = ({ chatId, chatName }: ChatElementProps) => {
         </div>
       )}
 
-      {/* Modal component */}
-      <DeleteChatModal isOpen={isModalOpen} chatId={chatId} onClose={() => setIsModalOpen(false)} />
+      <DeleteChatModal
+        isOpen={isModalOpen}
+        chatId={chatId}
+        onClose={() => setIsModalOpen(false)}
+      />
     </div>
   );
 };

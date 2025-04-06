@@ -1,25 +1,24 @@
 import { Chat } from "@/interfaces/chat.interface";
 
-export const startChat = async (userId: string) => {
+export const startChat = async (userId: string): Promise<Chat> => {
   const response = await fetch(
     `https://llm-chatbot-reg-production.up.railway.app/start_chat`,
     {
       method: "POST",
-      body: JSON.stringify({
-        user_id: userId,
-      }),
+      body: JSON.stringify({ user_id: userId }),
       headers: {
         "Content-Type": "application/json",
-        "api-key": "40b27ff5-665d-4ad6-8c06-e1ea17a3d996", // mismo header aquí
+        "api-key": "40b27ff5-665d-4ad6-8c06-e1ea17a3d996",
       },
     }
   );
 
   if (!response.ok) {
-    throw new Error("Failed to delete chat");
+    throw new Error("Failed to start chat");
   }
 
-  return true;
+  const data = await response.json();
+  return data.chat;
 };
 
 export const deleteChat = async (chatId: string) => {
@@ -62,12 +61,12 @@ export const fetchChats = async (userId: string): Promise<Chat[]> => {
 
 export const updateChatName = async (chatId: string, name: string) => {
   const response = await fetch(
-    `https://llm-chatbot-reg-production.up.railway.app/chats/${chatId}/update_name?chat_history_name=${name}`,	
+    `https://llm-chatbot-reg-production.up.railway.app/chats/${chatId}/update_name?chat_history_name=${name}`,
     {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
-        "api-key": "40b27ff5-665d-4ad6-8c06-e1ea17a3d996", 
+        "api-key": "40b27ff5-665d-4ad6-8c06-e1ea17a3d996",
       },
     }
   );
@@ -79,21 +78,26 @@ export const updateChatName = async (chatId: string, name: string) => {
   return true;
 };
 
-export const getAllMessagesByChatId = async (chatId: string) => {
+import { Message } from "@/interfaces/message.interface";
+
+export const getAllMessagesByChatId = async (
+  chatId: string
+): Promise<Message[]> => {
   const response = await fetch(
     `https://llm-chatbot-reg-production.up.railway.app/chats/${chatId}/messages`,
     {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
-        "api-key": "40b27ff5-665d-4ad6-8c06-e1ea17a3d996", 
+        "api-key": "40b27ff5-665d-4ad6-8c06-e1ea17a3d996",
       },
     }
   );
 
   if (!response.ok) {
-    throw new Error("Failed to delete chat");
+    throw new Error("Failed to fetch messages");
   }
 
-  return true;
+  const data = await response.json();
+  return data.messages ?? data; 
 };

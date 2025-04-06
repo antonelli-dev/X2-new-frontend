@@ -24,6 +24,6 @@ export const useCategoryStore = create<CategoryStore>((set, get) => ({
   },
 
   removeDocumentFromDB: async (docId) => {
-    console.log(`(Boilerplate) Eliminar documento en BD con id: ${docId}`);
+    console.log(`¿Eliminar documento en BD con id: ${docId}`);
   },
 }));

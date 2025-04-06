@@ -1,43 +1,53 @@
 import { Chat } from "@/interfaces/chat.interface";
-import { deleteChat, fetchChats, startChat, updateChatName } from "@/services/ChatServices";
+import {
+  deleteChat,
+  fetchChats,
+  startChat,
+  updateChatName,
+} from "@/services/ChatServices";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 
 export const useFetchChats = (userId: string) => {
-    return useQuery<Chat[], Error>({
-        queryKey: ["chats", userId],
-        queryFn: () => fetchChats(userId),
-    });
+  return useQuery<Chat[], Error>({
+    queryKey: ["chats", userId],
+    queryFn: () => fetchChats(userId),
+  });
 };
 
 export const useDeleteChat = () => {
-    const queryClient = useQueryClient();
+  const queryClient = useQueryClient();
 
-    return useMutation({
-        mutationFn: (chatId: string) => deleteChat(chatId),
-        onSuccess: () => {
-            queryClient.invalidateQueries({ queryKey: ["chats"] });
-        },
-    });
+  return useMutation({
+    mutationFn: (chatId: string) => deleteChat(chatId),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["chats"] });
+    },
+  });
 };
 
-export const useStartChat = () => {
-    const queryClient = useQueryClient();
+import { useChatStore } from "@/stores/useChatStore";
 
-    return useMutation({
-        mutationFn: (userId: string) => startChat(userId),
-        onSuccess: () => {
-            queryClient.invalidateQueries({ queryKey: ["chats"] });
-        },
-    });
-}
+export const useStartChat = () => {
+  const queryClient = useQueryClient();
+  const setSelectedChat = useChatStore((state) => state.setSelectedChat);
+
+  return useMutation({
+    mutationFn: (userId: string) => startChat(userId),
+    onSuccess: (newChat) => {
+      setSelectedChat(newChat.chat_id);
+      queryClient.invalidateQueries({ queryKey: ["chats"] });
+    },
+  });
+};
 
 export const useUpdateChatName = () => {
-    const queryClient = useQueryClient();
+  const queryClient = useQueryClient();
 
-    return useMutation({
-        mutationFn: ({ chatId, chatName }: { chatId: string; chatName: string }) => updateChatName(chatId, chatName),
-        onSuccess: () => {
-            queryClient.invalidateQueries({ queryKey: ["chats"] });
-        },
-    });
-}
+  return useMutation({
+    mutationFn: ({ chatId, chatName }: { chatId: string; chatName: string }) =>
+      updateChatName(chatId, chatName),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["chats"] });
+    },
+  });
+};

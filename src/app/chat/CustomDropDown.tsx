@@ -1,5 +1,6 @@
 "use client";
 import React, { useState } from "react";
+import { useChatStore } from "@/stores/useChatStore";
 
 interface CustomDropDownProps {
   categories: {
@@ -12,9 +13,23 @@ interface CustomDropDownProps {
   onSelectionChange?: (selectedIds: string[]) => void;
 }
 
-const CustomDropDown = ({ categories, onSelectionChange }: CustomDropDownProps) => {
-  const [openCategories, setOpenCategories] = useState<Record<string, boolean>>({});
-  const [selectedDocIds, setSelectedDocIds] = useState<string[]>([]);
+const CustomDropDown = ({
+  categories,
+  onSelectionChange,
+}: CustomDropDownProps) => {
+  const [openCategories, setOpenCategories] = useState<Record<string, boolean>>(
+    {}
+  );
+
+  const selectedDocuments = useChatStore((state) => state.selectedDocuments);
+  const selectedDocIds = React.useMemo(
+    () => selectedDocuments.map((doc) => doc.doc_id),
+    [selectedDocuments]
+  );
+
+  const setSelectedDocuments = useChatStore(
+    (state) => state.setSelectedDocuments
+  );
 
   const toggleDropdown = (category: string) => {
     setOpenCategories((prev) => ({
@@ -26,27 +41,38 @@ const CustomDropDown = ({ categories, onSelectionChange }: CustomDropDownProps) 
   const isCategorySelected = (docIds: string[]) =>
     docIds.every((id) => selectedDocIds.includes(id));
 
-  const toggleCategorySelection = (docs: { doc_id: string }[]) => {
+  const toggleCategorySelection = (
+    docs: { doc_id: string; name: string }[]
+  ) => {
     const docIds = docs.map((d) => d.doc_id);
     const allSelected = isCategorySelected(docIds);
 
     const updated = allSelected
-      ? selectedDocIds.filter((id) => !docIds.includes(id)) // deselecciona todos
-      : [...selectedDocIds, ...docIds.filter((id) => !selectedDocIds.includes(id))]; // agrega solo los faltantes
+      ? selectedDocIds.filter((id) => !docIds.includes(id))
+      : [
+          ...selectedDocIds,
+          ...docIds.filter((id) => !selectedDocIds.includes(id)),
+        ];
 
-    setSelectedDocIds(updated);
+    const updatedDocs = categories
+      .flatMap((cat) => cat.docs)
+      .filter((doc) => updated.includes(doc.doc_id));
+
+    setSelectedDocuments(updatedDocs);
     if (onSelectionChange) onSelectionChange(updated);
   };
 
   const toggleDocSelection = (doc_id: string) => {
-    setSelectedDocIds((prev) => {
-      const updated = prev.includes(doc_id)
-        ? prev.filter((id) => id !== doc_id)
-        : [...prev, doc_id];
+    const updatedIds = selectedDocIds.includes(doc_id)
+      ? selectedDocIds.filter((id) => id !== doc_id)
+      : [...selectedDocIds, doc_id];
 
-      if (onSelectionChange) onSelectionChange(updated);
-      return updated;
-    });
+    const updatedDocs = categories
+      .flatMap((cat) => cat.docs)
+      .filter((doc) => updatedIds.includes(doc.doc_id));
+
+    setSelectedDocuments(updatedDocs);
+    if (onSelectionChange) onSelectionChange(updatedIds);
   };
 
   const isSelected = (doc_id: string) => selectedDocIds.includes(doc_id);
@@ -98,7 +124,6 @@ const CustomDropDown = ({ categories, onSelectionChange }: CustomDropDownProps) 
         );
       })}
 
-      {/* Debug (opcional) */}
       <pre className="text-xs mt-4 bg-gray-100 p-2 rounded text-gray-600">
         {JSON.stringify(selectedDocIds, null, 2)}
       </pre>
