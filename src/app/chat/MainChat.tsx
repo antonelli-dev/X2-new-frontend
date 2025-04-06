@@ -84,12 +84,19 @@ const MainChat = () => {
                   </p>
                 ) : (
                   <div
-                    className="prose max-w-none text-sm text-gray-800"
+                    className="prose max-w-none text-sm text-gray-800
+                    prose-p:my-2
+                    prose-ul:pl-5 prose-ul:list-disc
+                    prose-li:my-1
+                    [&_table]:border-collapse [&_table]:w-full [&_table]:my-4
+                    [&_th]:border [&_th]:border-gray-300 [&_th]:bg-gray-200 [&_th]:p-2 [&_th]:text-left
+                    [&_td]:border [&_td]:border-gray-300 [&_td]:p-2"
                     dangerouslySetInnerHTML={{
                       __html: msg.content.replace(/```html|```/g, "").trim(),
                     }}
                   />
                 )}
+
                 <span className="text-xs text-gray-500 block mt-1">
                   {new Date(msg.created_at).toLocaleTimeString()}
                 </span>
