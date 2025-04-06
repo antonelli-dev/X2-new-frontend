@@ -149,6 +149,7 @@ const ChatElement = ({ chatId, chatName, onClick }: ChatElementProps) => {
         </div>
       )}
 
+
       <DeleteChatModal
         isOpen={isModalOpen}
         chatId={chatId}
