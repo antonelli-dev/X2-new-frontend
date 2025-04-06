@@ -7,6 +7,9 @@ import {
   useFetchMessages,
 } from "@/queries/message.queries";
 import { Send } from "lucide-react";
+import { Message } from "@/interfaces/message.interface";
+import { useQueryClient } from "@tanstack/react-query";
+import { v4 as uuidv4 } from "uuid";
 
 interface Props {
   placeholder?: string;
@@ -17,6 +20,7 @@ export const InteractiveInput = ({ placeholder, className }: Props) => {
   const { selectedChat, selectedDocuments } = useChatStore();
   const [input, setInput] = useState("");
 
+  const queryClient = useQueryClient();
   const { refetch } = useFetchMessages(selectedChat);
   const createMessage = useCreateMessage();
   const botResponse = useBotResponse();
@@ -26,15 +30,29 @@ export const InteractiveInput = ({ placeholder, className }: Props) => {
     if (!input.trim() || !selectedChat || selectedDocuments.length === 0)
       return;
 
+    const tempId = uuidv4();
+    const userMessage: Message = {
+      id: tempId,
+      chat_id: selectedChat,
+      sender: "human",
+      content: input,
+      created_at: new Date().toISOString(),
+      document: selectedDocuments.map((doc) => doc.doc_id),
+    };
+
+    queryClient.setQueryData<Message[]>(["messages", selectedChat], (old) =>
+      old ? [...old, userMessage] : [userMessage]
+    );
+
+    setInput(""); 
+
     try {
       await createMessage.mutateAsync({
         chatId: selectedChat,
-        sender: "USER",
+        sender: "HUMAN",
         content: input,
         document: selectedDocuments.map((doc) => doc.doc_id),
       });
-
-      await refetch();
 
       const aiReply = await botResponse.mutateAsync({
         chatId: selectedChat,
@@ -50,7 +68,6 @@ export const InteractiveInput = ({ placeholder, className }: Props) => {
       });
 
       await refetch();
-      setInput("");
     } catch (error) {
       console.error("Error sending message:", error);
     }

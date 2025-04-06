@@ -25,7 +25,7 @@ export const createMessage = async ({
   document,
 }: {
   chatId: string;
-  sender: "USER" | "BOT";
+  sender: "HUMAN" | "BOT";
   content: string;
   document: string[];
 }): Promise<Message> => {

@@ -49,16 +49,29 @@ const MainChat = () => {
     );
   }
 
+  const sortedMessages = [...messages].sort((a, b) => {
+    const timeA = new Date(a.created_at).getTime();
+    const timeB = new Date(b.created_at).getTime();
+    if (timeA === timeB) {
+      return a.id.localeCompare(b.id);
+    }
+    return timeA - timeB;
+  });
+
   return (
     <div className="flex flex-col flex-1 h-full px-6 py-4">
       <div className="flex-1 overflow-y-auto pr-2 space-y-4">
-        {messages.map((msg) => {
-          const isUser = msg.sender.toLowerCase() === "user";
+        {sortedMessages.map((msg) => {
+          const isUser = msg.sender.toLowerCase() === "human";
+          console.log(isUser);
+          console.log(msg.sender);
 
           return (
             <div
               key={msg.id}
-              className={`w-full flex ${isUser ? "justify-end" : "justify-start"}`}
+              className={`w-full flex ${
+                isUser ? "justify-end" : "justify-start"
+              }`}
             >
               <div
                 className={`p-3 rounded-md max-w-xl ${
