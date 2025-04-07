@@ -2,6 +2,7 @@ import React from "react";
 import AvaraLogo from "@/img/avara-logo.png";
 import Image from "next/image";
 import { ChatHistory } from "@/components/ChatHistory";
+import SideBarButtonsContainer from "./SideBarButtonsContainer";
 
 const ChatSideBar = () => {
   return (
@@ -20,11 +21,7 @@ const ChatSideBar = () => {
         </section>
 
         <ChatHistory></ChatHistory>
-        <div className="flex flex-col justify-between mt-auto mb-4">
-          <button className="text-left text-xl py-1 px-4">API</button>
-          <button className="text-left text-xl py-1 px-4">Contact</button>
-          <button className="text-left text-xl py-1 px-4">Logout</button>
-        </div>
+        <SideBarButtonsContainer />
       </div>
     </div>
   );
