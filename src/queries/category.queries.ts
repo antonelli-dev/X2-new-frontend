@@ -1,6 +1,6 @@
 import { Category } from "@/interfaces/category.interface";
 import { getCategories } from "@/services/CategoryServices";
-import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { useQuery} from "@tanstack/react-query";
 
 export const useFetchCategories = (userId: string) => {
   return useQuery<Category, Error>({

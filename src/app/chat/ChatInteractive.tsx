@@ -3,5 +3,5 @@ interface Props {
     chatName: string;
 }
 
-export const ChatInteractive = ({ chatId, chatName }: Props) => {
+export const ChatInteractive = ({ }: Props) => {
 }

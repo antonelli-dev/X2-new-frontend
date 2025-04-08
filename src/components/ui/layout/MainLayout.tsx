@@ -15,7 +15,7 @@ export const MainLayout = ({ children }: Props) => {
 
     useEffect(() => {
       const getUser = async () => {
-        const { data, error } = await supabase.auth.getUser();
+        const { data } = await supabase.auth.getUser();
         if (data?.user) {
           setUser({
             user_id: data.user.id,

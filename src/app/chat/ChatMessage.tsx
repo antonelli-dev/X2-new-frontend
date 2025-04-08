@@ -4,7 +4,6 @@ import { CustomDropdownItemText } from "@/components/ui/CustomDropdown/CustomDro
 import { CustomDropdownList } from "@/components/ui/CustomDropdown/CustomDropdownList";
 import { CustomDropdownSeparator } from "@/components/ui/CustomDropdown/CustomDropdownSeparator";
 import { Book } from "lucide-react";
-import { useState } from "react";
 
 interface Props {
     message: {
