@@ -4,5 +4,5 @@ export interface Message {
   sender: "human" | "bot";
   content: string;
   created_at: string;
-  document: string[];
+  document_name: string[];
 }
