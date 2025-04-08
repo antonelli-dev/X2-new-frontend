@@ -37,14 +37,14 @@ export const InteractiveInput = ({ placeholder, className }: Props) => {
       sender: "human",
       content: input,
       created_at: new Date().toISOString(),
-      document: selectedDocuments.map((doc) => doc.doc_id),
+      document_name: selectedDocuments.map((doc) => doc.doc_id),
     };
 
     queryClient.setQueryData<Message[]>(["messages", selectedChat], (old) =>
       old ? [...old, userMessage] : [userMessage]
     );
 
-    setInput(""); 
+    setInput("");
 
     try {
       await createMessage.mutateAsync({
