@@ -3,12 +3,20 @@
 import { Plus, Upload } from "lucide-react";
 import { CustomButton } from "./ui/CustomButton";
 import ChatList from "@/app/chat/ChatList";
-import { useStartChat } from "@/queries/chat.queries";
 import { useAuthStore } from "@/stores/useAuthStore";
+import { useQueryClient } from "@tanstack/react-query";
+import { useStartChat } from "@/queries/chat.queries";
 
 export const ChatHistory = () => {
-    const { mutate: startChat, isPending } = useStartChat();
     const user = useAuthStore((state) => state.user);
+    const queryClient = useQueryClient();
+
+    const { mutate: startChat, isPending } = useStartChat({
+        onSuccess: () => {
+            queryClient.invalidateQueries({ queryKey: ["chats", user?.user_id] });
+
+        }
+    });
 
     const handleStartChat = () => {
         if (!user) return;

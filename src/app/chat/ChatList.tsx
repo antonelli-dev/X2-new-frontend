@@ -13,10 +13,13 @@ const ChatList = () => {
   const setSelectedChat = useChatStore((state) => state.setSelectedChat);
 
   useEffect(() => {
+  
     if (chats) {
       setChats(chats);
     }
   }, [chats, setChats]);
+
+  
 
   if (isLoading)
     return <div className="text-center py-4">Loading chats...</div>;
