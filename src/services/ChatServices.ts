@@ -18,7 +18,7 @@ export const startChat = async (userId: string): Promise<Chat> => {
   }
 
   const data = await response.json();
-  return data.chat;
+  return data;
 };
 
 export const deleteChat = async (chatId: string) => {

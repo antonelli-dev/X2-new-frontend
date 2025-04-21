@@ -6,6 +6,11 @@ import {
   updateChatName,
 } from "@/services/ChatServices";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { useChatStore } from "@/stores/useChatStore";
+
+interface UseStartChatOptions {
+  onSuccess?: (newChat: Chat) => void;
+}
 
 export const useFetchChats = (userId: string) => {
   return useQuery<Chat[], Error>({
@@ -24,22 +29,24 @@ export const useDeleteChat = () => {
     },
   });
 };
-
-import { useChatStore } from "@/stores/useChatStore";
-
-export const useStartChat = () => {
+export const useStartChat = ({ onSuccess }: UseStartChatOptions = {}) => {
   const queryClient = useQueryClient();
-  const setSelectedChat = useChatStore((state) => state.setSelectedChat);
+  // const setSelectedChat = useChatStore((state) => state.setSelectedChat);
 
   return useMutation({
     mutationFn: (userId: string) => startChat(userId),
     onSuccess: (newChat) => {
-      setSelectedChat(newChat.chat_id);
+    
+      // setSelectedChat(newChat.chat_id);
       queryClient.invalidateQueries({ queryKey: ["chats"] });
+
+
+      if (onSuccess) {
+        onSuccess(newChat);
+      }
     },
   });
 };
-
 export const useUpdateChatName = () => {
   const queryClient = useQueryClient();
 
