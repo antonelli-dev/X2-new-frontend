@@ -29,7 +29,7 @@ const page = async () => {
         </div>
       </div>
 
-      <div className="h-full w-1/5">
+      <div className="h-auto w-1/5 my-4">
         <DocumentSideBar />
       </div>
     </div>

@@ -8,20 +8,36 @@ const ChatSideBar = () => {
   const user = useAuthStore((state) => state.user);
   const { data, isLoading, error } = useFetchCategories(user?.user_id ?? "");
 
-  if (isLoading) return <div className="text-center py-4">Loading documents...</div>;
-  if (error) return <div className="text-center py-4 text-red-500">Error loading documents</div>;
+  if (isLoading)
+    return <div className="text-center py-4">Loading documents...</div>;
+  if (error)
+    return (
+      <div className="text-center py-4 text-red-500">
+        Error loading documents
+      </div>
+    );
 
-  const categoriesData = Object.entries(data?.documents ?? {}).map(([categoryName, docs]) => ({
-    category: categoryName,
-    docs: docs.map((doc) => ({
-      name: doc.name,
-      doc_id: doc.doc_id,
-    })),
-  }));
+  const categoriesData = Object.entries(data?.documents ?? {}).map(
+    ([categoryName, docs]) => ({
+      category: categoryName,
+      docs: docs.map((doc) => ({
+        name: doc.name,
+        doc_id: doc.doc_id,
+      })),
+    })
+  );
 
   return (
     <div className="h-full p-2 py-5">
-      <div className="flex flex-col rounded-lg border-2 border-black h-full pl-4 pr-4 py-10">
+      <div
+        className="  w-full max-w-[280px] min-h-full sm:rounded-[10px]
+          bg-gradient-to-b from-[#ECF5FF] to-white
+          border border-[#42566F]
+          shadow-[5px_10px_20px_rgba(0,0,0,0.25)]
+          box-border px-7 py-6
+          flex flex-col
+        "
+      >
         <span className="font-bold text-xl">Select Documents to chat</span>
         <CustomDropDown categories={categoriesData} />
 
