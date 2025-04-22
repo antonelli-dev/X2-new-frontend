@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect, ChangeEvent } from "react";
-import { Pencil, Save, X } from "lucide-react";
+import { Pencil, Save, Trash2, X } from "lucide-react";
 import { DeleteChatModal } from "./DeleteChatModal";
 import { useUpdateChatName } from "@/queries/chat.queries";
 import { useChatStore } from "@/stores/useChatStore";
@@ -127,24 +127,30 @@ const ChatElement = ({ chatId, chatName, onClick }: ChatElementProps) => {
       {openMenu && (
         <div
           ref={menuRef}
-          className="absolute top-full right-4 mt-2 w-32 bg-gray-800 text-white rounded-md shadow-lg z-50"
+          className="absolute top-full right-4 mt-2 w-32 bg-[#ECF5FF] text-black rounded-md shadow-lg z-50"
         >
           <button
-            className="w-full text-left px-4 py-2 hover:bg-gray-700 text-sm"
+            className="w-full text-left px-4 py-2  text-sm hover:bg-[#D1E9FF]"
             onClick={() => {
               setOpenMenu(false);
               setIsEditing(true);
             }}
           >
-            Rename
+            <div className="flex flex-row gap-2 items-center">
+              <Pencil size={16} className="text-gray-500" />
+              <span>Edit</span>
+            </div>
           </button>
           <button
-            className="w-full text-left px-4 py-2 hover:bg-gray-700 text-sm"
+            className="w-full text-left px-4 py-2 text-sm hover:bg-[#D1E9FF]"
             onClick={() => {
               openModal();
             }}
           >
-            Delete
+            <div className="flex flex-row gap-2 items-center">
+              <Trash2 size={16} className="text-gray-500" />
+              <span>Delete</span>
+            </div>
           </button>
         </div>
       )}
