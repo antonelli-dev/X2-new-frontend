@@ -6,7 +6,6 @@ import {
   updateChatName,
 } from "@/services/ChatServices";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { useChatStore } from "@/stores/useChatStore";
 
 interface UseStartChatOptions {
   onSuccess?: (newChat: Chat) => void;
