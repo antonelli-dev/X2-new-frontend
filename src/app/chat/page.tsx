@@ -12,7 +12,7 @@ const page = async () => {
         background: "linear-gradient(180deg, #EBF5FF 0%, #FFFFFF 46.5%)",
       }}
     >
-      <div className="h-auto w-1/5 my-4">
+      <div className="h-auto w-1/5 my-4 flex justify-center">
         <ChatSideBar />
       </div>
 
@@ -29,7 +29,7 @@ const page = async () => {
         </div>
       </div>
 
-      <div className="h-auto w-1/5 my-4">
+      <div className="h-auto w-1/5 my-4 flex justify-center">
         <DocumentSideBar />
       </div>
     </div>

@@ -28,9 +28,9 @@ const ChatSideBar = () => {
   );
 
   return (
-    <div className="h-full p-2 py-5">
+    <div className="relative h-full p-6 sm:p-6">
       <div
-        className="  w-full max-w-[280px] min-h-full sm:rounded-[10px]
+        className="w-full max-w-[280px] min-h-full sm:rounded-[10px]
           bg-gradient-to-b from-[#ECF5FF] to-white
           border border-[#42566F]
           shadow-[5px_10px_20px_rgba(0,0,0,0.25)]
