@@ -12,16 +12,16 @@ const page = async () => {
         background: "linear-gradient(180deg, #FFFFFF 0%, #ECF5FF 100%)",
       }}
     >
-      <div className="h-full w-1/5 ">
+      <div className="h-auto w-1/5 my-4">
         <ChatSideBar />
       </div>
 
-      <div className="w-3/5 h-full p-2 py-5 flex flex-col">
+      <div className="w-3/5 h-full px-4 sm:px-6 pb-6 flex flex-col">
         <div className="flex-1 overflow-y-auto">
           <MainChat />
         </div>
 
-        <div className="mt-2">
+        <div className="mt-2 mb-4">
           <InteractiveInput
             className="grandiet-interactive-input"
             placeholder="Write Message to Nebula"

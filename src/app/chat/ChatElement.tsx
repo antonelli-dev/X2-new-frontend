@@ -23,17 +23,25 @@ const ChatElement = ({ chatId, chatName, onClick }: ChatElementProps) => {
 
   const menuRef = useRef<HTMLDivElement | null>(null);
   const buttonRef = useRef<SVGSVGElement | null>(null);
+  const inputRef = useRef<HTMLInputElement | null>(null);
+  const editContainerRef = useRef<HTMLDivElement | null>(null);
 
   const { mutate: setChatName } = useUpdateChatName();
 
-  useEffect(() => {
-    if (chatName) {
-      setCurrentChatName(chatName);
-    }
-  }, []);
-
   const selectedChat = useChatStore((state) => state.selectedChat);
   const isActive = selectedChat === chatId;
+
+  useEffect(() => {
+    if (isEditing && inputRef.current) {
+      setTimeout(() => {
+        if (inputRef.current) {
+          inputRef.current.focus();
+          const length = inputRef.current.value.length;
+          inputRef.current.setSelectionRange(length, length);
+        }
+      }, 0);
+    }
+  }, [isEditing]);
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -46,20 +54,32 @@ const ChatElement = ({ chatId, chatName, onClick }: ChatElementProps) => {
       ) {
         setOpenMenu(false);
       }
+
+      if (
+        isEditing &&
+        editContainerRef.current &&
+        !editContainerRef.current.contains(event.target as Node)
+      ) {
+        handleSaveChangeName();
+      }
     };
 
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
-  }, [openMenu]);
+  }, [openMenu, isEditing]);
 
   const openModal = () => {
     setIsModalOpen(true);
     setOpenMenu(false);
   };
 
-  const handleSelectChat = () => {
-    onClick?.();
-    setOpenMenu(false);
+  const handleSelectChat = (e: React.MouseEvent) => {
+    if (!isEditing) {
+      onClick?.();
+      setOpenMenu(false);
+    } else {
+      e.stopPropagation();
+    }
   };
 
   const handleSaveChangeName = () => {
@@ -68,61 +88,98 @@ const ChatElement = ({ chatId, chatName, onClick }: ChatElementProps) => {
     setOpenMenu(false);
   };
 
-  const NormalButton = () => (
-    <>
-      <span>{currentChatName ?? "New Chat"}</span>
-      <Pencil
-        ref={buttonRef}
-        size={18}
-        className="ml-2 cursor-pointer"
-        onClick={(e) => {
-          e.stopPropagation();
-          setOldChatName(currentChatName);
-          setOpenMenu(!openMenu);
-        }}
-      />
-    </>
-  );
+  const handleCancelEdit = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    setCurrentChatName(oldChatName);
+    setIsEditing(false);
+  };
 
-  const EditingButton = () => (
-    <>
-      <input
-        type="text"
-        className="w-full bg-gray-400"
-        value={currentChatName ?? ""}
-        onChange={(e: ChangeEvent<HTMLInputElement>) =>
-          setCurrentChatName(e.target.value)
-        }
-      ></input>
-      <X
-        ref={buttonRef}
-        size={18}
-        className="ml-2 cursor-pointer"
-        onClick={(e) => {
-          e.stopPropagation();
-          setCurrentChatName(oldChatName);
-          setIsEditing(false);
-        }}
-      />
-      <Save
-        ref={buttonRef}
-        size={18}
-        className="ml-2 cursor-pointer"
-        onClick={handleSaveChangeName}
-      />
-    </>
-  );
+  const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
+    e.stopPropagation();
+    setCurrentChatName(e.target.value);
+  };
+
+  const startEditing = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    setOldChatName(currentChatName);
+    setOpenMenu(false);
+    setIsEditing(true);
+  };
+
+  const handleInputKeyDown = (e: React.KeyboardEvent) => {
+    e.stopPropagation();
+    if (e.key === "Enter") {
+      handleSaveChangeName();
+    } else if (e.key === "Escape") {
+      setCurrentChatName(oldChatName);
+      setIsEditing(false);
+    }
+  };
 
   return (
     <div className="relative w-full">
-      <button
+      <div
         className={`text-left w-full px-4 py-3 rounded-lg shadow-md flex justify-between items-center transition-all
-        ${isActive ? "bg-blue-100 border border-blue-400" : "bg-white"}
-      `}
+          ${isActive ? "bg-blue-100 border border-blue-400" : "bg-white"}`}
         onClick={handleSelectChat}
       >
-        {isEditing ? <EditingButton /> : <NormalButton />}
-      </button>
+        {isEditing ? (
+          <div
+            ref={editContainerRef}
+            className="flex justify-between items-center w-full"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <input
+              ref={inputRef}
+              type="text"
+              className="w-full bg-gray-200 px-2 py-1 rounded outline-none"
+              value={currentChatName}
+              onChange={handleInputChange}
+              onKeyDown={handleInputKeyDown}
+              onClick={(e) => e.stopPropagation()}
+              onBlur={(e) => {
+                e.preventDefault();
+                setTimeout(() => {
+                  if (isEditing && inputRef.current) {
+                    inputRef.current.focus();
+                  }
+                }, 10);
+              }}
+            />
+            <div className="flex items-center ml-2">
+              <X
+                size={18}
+                className="cursor-pointer text-gray-600 hover:text-gray-800"
+                onClick={handleCancelEdit}
+              />
+              <Save
+                size={18}
+                className="ml-2 cursor-pointer text-blue-600 hover:text-blue-800"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  handleSaveChangeName();
+                }}
+              />
+            </div>
+          </div>
+        ) : (
+          <>
+            <span>{currentChatName ?? "New Chat"}</span>
+            <Pencil
+              ref={buttonRef}
+              size={18}
+              className="ml-2 cursor-pointer text-gray-600 hover:text-gray-800"
+              onClick={(e) => {
+                e.stopPropagation();
+                setOldChatName(currentChatName);
+                if (!isEditing) {
+                  setOpenMenu(!openMenu);
+                }
+              }}
+            />
+          </>
+        )}
+      </div>
 
       {openMenu && (
         <div
@@ -131,16 +188,14 @@ const ChatElement = ({ chatId, chatName, onClick }: ChatElementProps) => {
         >
           <button
             className="w-full text-left px-4 py-2 hover:bg-gray-700 text-sm"
-            onClick={() => {
-              setOpenMenu(false);
-              setIsEditing(true);
-            }}
+            onClick={startEditing}
           >
             Rename
           </button>
           <button
             className="w-full text-left px-4 py-2 hover:bg-gray-700 text-sm"
-            onClick={() => {
+            onClick={(e) => {
+              e.stopPropagation();
               openModal();
             }}
           >
@@ -148,7 +203,6 @@ const ChatElement = ({ chatId, chatName, onClick }: ChatElementProps) => {
           </button>
         </div>
       )}
-
 
       <DeleteChatModal
         isOpen={isModalOpen}

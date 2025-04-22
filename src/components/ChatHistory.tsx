@@ -8,32 +8,41 @@ import { useQueryClient } from "@tanstack/react-query";
 import { useStartChat } from "@/queries/chat.queries";
 
 export const ChatHistory = () => {
-    const user = useAuthStore((state) => state.user);
-    const queryClient = useQueryClient();
+  const user = useAuthStore((state) => state.user);
+  const queryClient = useQueryClient();
 
-    const { mutate: startChat, isPending } = useStartChat({
-        onSuccess: () => {
-            queryClient.invalidateQueries({ queryKey: ["chats", user?.user_id] });
+  const { mutate: startChat, isPending } = useStartChat({
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["chats", user?.user_id] });
+    },
+  });
 
-        }
-    });
+  const handleStartChat = () => {
+    if (!user) return;
+    startChat(user.user_id);
+  };
 
-    const handleStartChat = () => {
-        if (!user) return;
-        startChat(user.user_id);
-    };
+  return (
+    <>
 
-    return (
-        <>
-            Your user id is {user?.user_id}
-            <CustomButton text="Upload" icon={<Upload />} className="mb-10" />
-            <div className="w-full flex flex-row justify-between items-center py-3 rounded-lg space-y-2">
-                <span className="font-bold text-2xl">Chats</span>
-                <button onClick={handleStartChat} disabled={isPending} className="disabled:text-red-500 cursor-pointer">
-                    <Plus></Plus>
-                </button>
-            </div>
-            <ChatList />
-        </>
-    )
+      <div className="w-full">
+        <CustomButton
+          text="Upload"
+          icon={<Upload  className="h-5"/>}
+          className="mb-10 w-full"
+        />
+      </div>
+      <div className="w-full flex flex-row justify-between items-center py-3 rounded-lg space-y-2">
+        <span className="font-bold text-2xl">Chats</span>
+        <button
+          onClick={handleStartChat}
+          disabled={isPending}
+          className="disabled:text-red-500 cursor-pointer"
+        >
+          <Plus></Plus>
+        </button>
+      </div>
+      <ChatList />
+    </>
+  );
 };

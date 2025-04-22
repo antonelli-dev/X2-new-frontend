@@ -5,6 +5,15 @@ import ReactQueryProvider from "@/providers/ReactQueryProvider";
 import { AuthProvider } from "@/context/AuthContext";
 import { MainLayout } from "@/components/ui/layout/MainLayout";
 
+import { Exo_2 } from "next/font/google";
+
+const exo = Exo_2({
+  subsets: ["latin"],
+  weight: ["400", "700"],
+  variable: "--font-exo2",
+  display: "swap",
+});
+
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
@@ -28,13 +37,13 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        className={`${geistSans.variable} ${geistMono.variable} ${exo.variable} antialiased`}
       >
         <ReactQueryProvider>
           <AuthProvider>
             <MainLayout>
-            {children}
-            <div id="modal-root"></div>
+              {children}
+              <div id="modal-root"></div>
             </MainLayout>
           </AuthProvider>
         </ReactQueryProvider>
