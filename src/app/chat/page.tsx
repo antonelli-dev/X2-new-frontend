@@ -9,7 +9,7 @@ const page = async () => {
     <div
       className="w-full h-full flex flex-row"
       style={{
-        background: "linear-gradient(180deg, #FFFFFF 0%, #ECF5FF 100%)",
+        background: "linear-gradient(180deg, #EBF5FF 0%, #FFFFFF 46.5%)",
       }}
     >
       <div className="h-auto w-1/5 my-4">
