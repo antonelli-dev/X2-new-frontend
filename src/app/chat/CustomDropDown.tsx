@@ -123,10 +123,6 @@ const CustomDropDown = ({
           </div>
         );
       })}
-
-      <pre className="text-xs mt-4 bg-gray-100 p-2 rounded text-gray-600">
-        {JSON.stringify(selectedDocIds, null, 2)}
-      </pre>
     </div>
   );
 };
