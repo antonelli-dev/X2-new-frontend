@@ -30,18 +30,19 @@ const ChatSideBar = () => {
   return (
     <div className="relative h-full p-6 sm:p-6">
       <div
-        className="w-full max-w-[280px] min-h-full sm:rounded-[10px]
+        className="w-full max-w-[280px] h-full sm:rounded-[10px]
           bg-gradient-to-b from-[#ECF5FF] to-white
           border border-[#42566F]
           shadow-[5px_10px_20px_rgba(0,0,0,0.25)]
-          box-border px-7 py-6
+          box-border px-5 py-6
           flex flex-col
         "
       >
         <span className="font-bold text-xl">Select Documents to chat</span>
-        <CustomDropDown categories={categoriesData} />
-
-        <div className="flex flex-col justify-between mt-auto mb-4"></div>
+        <div className="mt-4 flex-1 overflow-hidden">
+          <CustomDropDown categories={categoriesData} />
+        </div>
+        <div className="mt-auto mb-4"></div>
       </div>
     </div>
   );

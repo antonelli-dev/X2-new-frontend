@@ -78,7 +78,7 @@ const CustomDropDown = ({
   const isSelected = (doc_id: string) => selectedDocIds.includes(doc_id);
 
   return (
-    <div className="w-full">
+    <div className="flex-1 overflow-y-auto max-h-full">
       {categories.map(({ category, docs }) => {
         const docIds = docs.map((d) => d.doc_id);
         const allSelected = isCategorySelected(docIds);
