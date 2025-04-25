@@ -1,8 +1,8 @@
 "use client";
 import React from "react";
-import CustomDropDown from "./CustomDropDown";
 import { useAuthStore } from "@/stores/useAuthStore";
 import { useFetchCategories } from "@/queries/category.queries";
+import DocumentCategoryList from "./DocumentCategoryList";
 
 const ChatSideBar = () => {
   const user = useAuthStore((state) => state.user);
@@ -40,7 +40,7 @@ const ChatSideBar = () => {
       >
         <span className="font-bold text-xl">Select Documents to chat</span>
         <div className="mt-4 flex-1 overflow-hidden">
-          <CustomDropDown categories={categoriesData} />
+          <DocumentCategoryList categories={categoriesData} />
         </div>
         <div className="mt-auto mb-4"></div>
       </div>
