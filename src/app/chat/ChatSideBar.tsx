@@ -3,6 +3,7 @@ import AvaraLogo from "@/img/avara-logo.png";
 import Image from "next/image";
 import { ChatHistory } from "@/components/ChatHistory";
 import SideBarButtonsContainer from "./SideBarButtonsContainer";
+import { DocumentCategoryModal } from "@/components/ui/DocumentCategoryModal/DocumentCategoryModal";
 
 const ChatSideBar = () => {
   return (
@@ -17,6 +18,7 @@ const ChatSideBar = () => {
           flex flex-col
         "
       >
+
         <section className="flex items-center justify-between mb-6">
           <div className="flex items-center gap-2">
             <Image

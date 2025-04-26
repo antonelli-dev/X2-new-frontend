@@ -61,6 +61,7 @@ const MainChat = () => {
 
   return (
     <div className="flex flex-col flex-1 h-full px-6 py-4">
+
       <div className="flex-1 overflow-y-auto pr-2 space-y-4">
         {sortedMessages.map((msg) => (
           <ChatMessage
