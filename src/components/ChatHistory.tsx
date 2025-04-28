@@ -33,7 +33,7 @@ export const ChatHistory = () => {
           className="mb-10 w-full"
         />
 
-      <DocumentCategoryModal isOpen={true} onClose={() => {}}  />
+      <DocumentCategoryModal isOpen={false} onClose={() => {}}  />
       </div>
       <div className="w-full flex flex-row justify-between items-center py-3 rounded-lg space-y-2">
         <span className="font-bold text-2xl">Chats</span>

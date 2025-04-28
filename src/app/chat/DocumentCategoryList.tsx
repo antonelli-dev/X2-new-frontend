@@ -2,6 +2,9 @@
 import React, { useState } from "react";
 import { useChatStore } from "@/stores/useChatStore";
 import { ChevronDown, ChevronUp } from "lucide-react";
+import { useCategoryStore } from "@/stores/useCategoryStore";
+import { useFetchCategories } from "@/queries/category.queries";
+import { useAuthStore } from "@/stores/useAuthStore";
 
 interface Props {
   categories: {
@@ -77,6 +80,7 @@ const DocumentCategoryList = ({
   };
 
   const isSelected = (doc_id: string) => selectedDocIds.includes(doc_id);
+  
 
   return (
     <div className="flex-1 overflow-y-auto max-h-full">

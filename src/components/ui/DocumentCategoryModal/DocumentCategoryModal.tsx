@@ -19,7 +19,7 @@ export const DocumentCategoryModal = ({ isOpen }: Props) => {
         <Dialog open={isOpen} onClose={() => { }} className="absolute z-50">
             <div className="fixed inset-0 w-screen overflow-y-auto p-4">
                 <div className="flex min-h-full items-center justify-center">
-                    <DialogPanel className="max-w-lg h-[450px] w-[600px] p-8 bg-white shadow-lg rounded-lg">
+                    <DialogPanel className="h-[600px] w-[900px] p-8 bg-white shadow-lg rounded-lg">
                        {/* <JustCreateCategoryScreen></JustCreateCategoryScreen> */}
                        {/* <CreateFirstCategoryScreen></CreateFirstCategoryScreen> */}
                        <MainDocumentCategoryScreen></MainDocumentCategoryScreen>
