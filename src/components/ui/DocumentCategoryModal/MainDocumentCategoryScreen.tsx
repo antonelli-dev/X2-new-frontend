@@ -4,7 +4,6 @@ import { CategoryItem } from "./CategoryItem";
 import { Plus } from "lucide-react";
 import { useAuthStore } from "@/stores/useAuthStore";
 import { useFetchCategories } from "@/queries/category.queries";
-import { Category } from "@/interfaces/category.interface";
 import { useEffect, useState } from "react";
 import { mapCategoriesFromCategoriesResponse } from "@/mappers/mapDocumentCategory";
 import { CategoryFormatted } from "@/interfaces/category-formatted.interface";

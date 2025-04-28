@@ -3,7 +3,7 @@ import AvaraLogo from "@/img/avara-logo.png";
 import Image from "next/image";
 import { ChatHistory } from "@/components/ChatHistory";
 import SideBarButtonsContainer from "./SideBarButtonsContainer";
-import { DocumentCategoryModal } from "@/components/ui/DocumentCategoryModal/DocumentCategoryModal";
+
 
 const ChatSideBar = () => {
   return (
