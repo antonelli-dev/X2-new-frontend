@@ -4,7 +4,7 @@ import { DocumentUpload } from "@/interfaces/document-upload.interface";
 export const uploadDocument = async (userId: string, categoryName: string, file: File): Promise<DocumentUpload> => {
   const formData = new FormData();
   formData.append("uid", userId);
-  formData.append("category", userId);
+  formData.append("category", categoryName);
   formData.append("file", file);
 
   const response = await fetch(
