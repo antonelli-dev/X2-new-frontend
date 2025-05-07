@@ -76,7 +76,7 @@ export const InteractiveInput = ({ placeholder, className }: Props) => {
   return (
     <form
       onSubmit={handleSend}
-      className={`flex items-center bg-white rounded-lg border border-gray-300 px-3 py-6 shadow-sm ${className}`}
+      className={`flex items-center bg-white rounded-lg border border-gray-300 px-3 py-3 shadow-sm ${className}`}
     >
       <input
         type="text"
